@@ -1,0 +1,21 @@
+- 1. Login with Google (Google Authentication) 
+
+- 2. Portfolio owner can add other's people IDs so that they can update information on portfolio site
+
+-3. Update your profile information (including profile pic, Introduction, social media handles)
+
+- 4. Resume upload functionality (People can download resume) 
+
+- 5. Can perform CRUD on experience 
+
+- 6. Can perform CRUD on education 
+
+- 7. Can perform CRUD on personal projects 
+
+- 8. Can perform CRUD on services that person provides 
+
+- 9. Can perform CRUD on tools that person uses 
+
+- 10. If someone wants to send message he/she can use contact form
+
+- 11. I can view people's messages and at the same time I also get mails
