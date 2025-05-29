@@ -1,0 +1,8 @@
+APIs related to user 
+
+GET - /users 
+- This API will return all users present on platform. 
+
+GET - /userDetails
+- This API will return user basic details
+

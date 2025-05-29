@@ -1,0 +1,22 @@
+1. Difference between mongo schema and model 
+
+🔹 Schema
+    * Defines the structure of a MongoDB document.
+    * Specifies field names, data types, defaults, and validations.
+    * Acts as a blueprint — doesn’t interact with the database directly.
+    * Created using `mongoose.Schema()`.
+
+
+🔸 Model
+    * Compiled version of a schema.
+    * Represents a MongoDB collection.
+    * Used to perform database operations (create, read, update, delete).
+    * Created using `mongoose.model()` with a schema.
+
+
+ 🎯 Quick analogy:
+    * Schema = Blueprint
+    * Model = Functional object based on the blueprint
+
+_________________________________________________________________________________________________
+
