@@ -1,11 +1,10 @@
 import express from "express";
 import "./config/database.js";
 import connectDB from "./config/database.js";
-import error from "./errorMessages.js";
+import messages from "./statusMessages.js";
 import { ManagementClient } from "auth0";
 import dotenv from "dotenv";
-import User from "./models/user.js";
-import mongoose from "mongoose";
+import UserDetails from "./models/user.js";
 
 dotenv.config();
 const app = express();
@@ -13,19 +12,51 @@ app.use(express.json());
 
 app.get("/userDetails", (req, res) => {});
 
-// todo :- Change functionality to one user details at once.
-app.post("/createUser", async (req, res) => {
+// ^ API :- Used to update profile details
+app.patch("/profile", async (req, res) => {
   try {
-    const user = new User(req.body);
-    await user.save();
-
-    res.send("User created successfully");
+    await UserDetails.updateOne(
+      {},
+      { $set: req.body },
+      { runValidators: true }
+    );
+    res.send(messages.UPDATE_SUCCESS);
   } catch (err) {
-    res.send(err.message);
+    res
+      .status(400)
+      .send({ message: messages.UPDATE_FAILED, error: err.message });
   }
 });
 
-//^ API :- Used to fetch all users of system.
+// ^ This API will update user details
+//todo This API afterwards not required.
+app.post("/profile", async (req, res) => {
+  try {
+    const userDetails = new UserDetails(req.body);
+    await userDetails.save();
+    res.send("User created successfully");
+  } catch (err) {
+    res.status(400).send({
+      message: messages.CREATE_FAILED,
+      error: err.message,
+    });
+  }
+});
+
+// ^ This API will return user basic details
+app.get("/profile", async (req, res) => {
+  try {
+    const details = await UserDetails.findOne();
+    res.send(details);
+  } catch (err) {
+    res.status(400).send({
+      message: messages.FETCH_FAILED,
+      error: err.message,
+    });
+  }
+});
+
+//^ This API will return all users present on platform.
 app.get("/users", async (req, res) => {
   try {
     const management = new ManagementClient({
@@ -33,14 +64,12 @@ app.get("/users", async (req, res) => {
       clientSecret: process.env.AUTH0_CLIENT_SECRET,
       domain: process.env.AUTH0_DOMAIN,
     });
-
     const users = await management.users.getAll();
-
     res.send(users);
   } catch (err) {
-    res.status(500).send({
-      error: error.FAILED_USERS_FETCH_AUTH0,
-      message: err.message,
+    res.status(400).send({
+      message: messages.FAILED_USERS_FETCH_AUTH0,
+      error: err.message,
     });
   }
 });

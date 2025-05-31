@@ -3,6 +3,9 @@ APIs related to user
 GET - /users 
 - This API will return all users present on platform. 
 
-GET - /userDetails
+GET - /profile
 - This API will return user basic details
+
+POST - /profile 
+- This API will update user details
 

@@ -1,22 +1,31 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const userDetailsSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,
+    minLength: 3,
+    maxLength: 50,
+    trim: true,
   },
   lastName: {
     type: String,
     required: true,
+    minLength: 3,
+    maxLength: 50,
+    trim: true,
   },
   emailId: {
     type: String,
     lowercase: true,
     required: true,
+    maxLength: 100,
+    trim: true,
   },
   phoneNumber: {
     type: String,
     required: true,
+    maxLength: 20,
   },
   profilePicUrl: {
     type: String,
@@ -39,4 +48,4 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model("UserDetails", userDetailsSchema);
