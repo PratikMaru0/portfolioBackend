@@ -32,6 +32,10 @@ app.patch("/profile", async (req, res) => {
 //todo This API afterwards not required.
 app.post("/profile", async (req, res) => {
   try {
+    const count = await UserDetails.countDocuments();
+    if (count >= 1) {
+      return res.status(400).send({ message: "Only one profile allowed." });
+    }
     const userDetails = new UserDetails(req.body);
     await userDetails.save();
     res.send("User created successfully");
