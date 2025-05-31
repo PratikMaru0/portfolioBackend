@@ -10,6 +10,7 @@ const messages = {
   DELETE_SUCCESS: "Data deleted successfully.",
   CREATE_SUCCESS: "Data created successfully.",
   FAILED_USERS_FETCH_AUTH0: "Failed to fetch users from Auth0.",
+  RECORD_NOT_FOUND: "No records found.",
 };
 
 export default messages;

@@ -1,7 +1,7 @@
 import express from "express";
 import "./config/database.js";
 import connectDB from "./config/database.js";
-import messages from "./statusMessages.js";
+import messages from "./constants/statusMessages.js";
 import { ManagementClient } from "auth0";
 import dotenv from "dotenv";
 import UserDetails from "./models/user.js";
@@ -10,17 +10,20 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-app.get("/userDetails", (req, res) => {});
-
 // ^ API :- Used to update profile details
 app.patch("/profile", async (req, res) => {
   try {
-    await UserDetails.updateOne(
+    const result = await UserDetails.updateOne(
       {},
       { $set: req.body },
       { runValidators: true }
     );
-    res.send(messages.UPDATE_SUCCESS);
+    console.log(result.modifiedCount);
+    if (result.modifiedCount > 0) {
+      res.send(messages.UPDATE_SUCCESS);
+    } else {
+      throw new Error(messages.RECORD_NOT_FOUND);
+    }
   } catch (err) {
     res
       .status(400)
@@ -38,7 +41,7 @@ app.post("/profile", async (req, res) => {
     }
     const userDetails = new UserDetails(req.body);
     await userDetails.save();
-    res.send("User created successfully");
+    res.send(messages.CREATE_SUCCESS);
   } catch (err) {
     res.status(400).send({
       message: messages.CREATE_FAILED,
@@ -82,8 +85,8 @@ app.get("/users", async (req, res) => {
 connectDB()
   .then(() => {
     console.log("Data connection established");
-    app.listen(3000, () => {
-      console.log("Listening on Port 3000");
+    app.listen(process.env.PORT, () => {
+      console.log("Listening on Port " + process.env.PORT);
     });
   })
   .catch((err) => {

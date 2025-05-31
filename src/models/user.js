@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import validator from "validator";
+import messages from "../constants/schemaMessages.js";
 
 const userDetailsSchema = new mongoose.Schema(
   {
@@ -22,6 +24,11 @@ const userDetailsSchema = new mongoose.Schema(
       required: true,
       maxLength: 100,
       trim: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error(messages.EMAIL_INVALID);
+        }
+      },
     },
     phoneNumber: {
       type: String,
@@ -31,6 +38,11 @@ const userDetailsSchema = new mongoose.Schema(
     profilePicUrl: {
       type: String,
       required: true,
+      validate(value) {
+        if (!validator.isURL(value)) {
+          throw new Error(messages.URL_INVALID);
+        }
+      },
     },
     tagline: {
       type: String,
@@ -42,10 +54,25 @@ const userDetailsSchema = new mongoose.Schema(
     },
     socialMediaLinks: {
       type: Array,
+      validate(links) {
+        if (links.length > 10) {
+          throw new Error(messages.SOCIAL_MEDIA_LINKS_LIMIT);
+        }
+        for (const link of links) {
+          if (!validator.isURL(link)) {
+            throw new Error(messages.URL_INVALID);
+          }
+        }
+      },
     },
     resumeUrl: {
       type: String,
       required: true,
+      validate(value) {
+        if (!validator.isURL(value)) {
+          throw new Error(messages.URL_INVALID);
+        }
+      },
     },
   },
   {
