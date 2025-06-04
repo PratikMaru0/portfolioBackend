@@ -2,7 +2,6 @@ import express from "express";
 import "./config/database.js";
 import connectDB from "./config/database.js";
 import messages from "./constants/statusMessages.js";
-import { ManagementClient } from "auth0";
 import dotenv from "dotenv";
 import UserDetails from "./models/user.js";
 import AllowedUsers from "./models/allowedUsers.js";
@@ -59,24 +58,6 @@ app.get("/profile", async (req, res) => {
   } catch (err) {
     res.status(400).send({
       message: messages.FETCH_FAILED,
-      error: err.message,
-    });
-  }
-});
-
-//^ This API will return all users present on platform.
-app.get("/users", async (req, res) => {
-  try {
-    const management = new ManagementClient({
-      clientId: process.env.AUTH0_CLIENT_ID,
-      clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      domain: process.env.AUTH0_DOMAIN,
-    });
-    const users = await management.users.getAll();
-    res.send(users);
-  } catch (err) {
-    res.status(400).send({
-      message: messages.FAILED_USERS_FETCH_AUTH0,
       error: err.message,
     });
   }
