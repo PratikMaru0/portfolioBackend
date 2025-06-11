@@ -6,6 +6,7 @@ import AllowedUsers from "./models/allowedUsers.js";
 
 dotenv.config();
 
+// ^ Admin validation
 const isAdmin = async (req, res, next) => {
   try {
     const { token } = req.cookies;
@@ -13,7 +14,7 @@ const isAdmin = async (req, res, next) => {
     if (!token) {
       throw new Error(messages.INVALID_TOKEN);
     }
-    const { _id } = jwt.verify(token, process.env.SECRET_KEY);
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET_KEY);
     const admin = await Admin.findOne({
       emailId: _id,
     });
@@ -30,6 +31,7 @@ const isAdmin = async (req, res, next) => {
   }
 };
 
+// ^ Is allowed to create an account. (Should be approved by Admin only).
 const isAllowed = async (req, res, next) => {
   try {
     const { emailId } = req.body;

@@ -7,8 +7,6 @@ import UserDetails from "./models/user.js";
 import AllowedUsers from "./models/allowedUsers.js";
 import Admin from "./models/admin.js";
 import { validateSignUpData } from "./utils/validation.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
 import { isAdmin, isAllowed } from "./middlewares.js";
 
@@ -146,14 +144,13 @@ app.post("/login", isAllowed, async (req, res) => {
       if (!admin) {
         throw new Error(messages.LOGIN_FAILED);
       }
-      const isPasswordValid = await bcrypt.compare(password, admin.password);
+      const isPasswordValid = await admin.validatePwd(password);
 
       if (isPasswordValid) {
-        const token = await jwt.sign(
-          { _id: admin.emailId },
-          process.env.SECRET_KEY
-        );
-        res.cookie("token", token);
+        const token = await admin.getJWT();
+        res.cookie("token", token, {
+          expires: new Date(Date.now() + 7 * 24 * 3600000), //& Cookie will expire in 7 days
+        });
         res.send(messages.LOGIN_SUCCESS);
       } else {
         throw new Error(messages.LOGIN_FAILED);

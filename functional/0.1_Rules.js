@@ -10,7 +10,7 @@
 
 // ? Use if you're not getting what's happening in code
 
-// &
+// & usefull notes
 
 // *
 
