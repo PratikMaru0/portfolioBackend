@@ -1,13 +1,13 @@
 # Portfolio APIs
 
-Authentication
+Authentication ✅
 
 - POST /signUp ✅
 - POST /login ✅
 
 ---
 
-Profile Data
+Profile Data ✅
 
 - GET /profile ✅
 - POST /profile ✅
@@ -15,7 +15,7 @@ Profile Data
 
 ---
 
-Administration
+Administration ✅
 
 - POST /addUser ✅
 - GET /getAllowedUsers ✅
@@ -23,7 +23,7 @@ Administration
 
 ---
 
-Quotes
+Quotes (Not decided)
 
 - GET /quotes
 - POST /quotes
@@ -31,7 +31,7 @@ Quotes
 
 ---
 
-Experiences
+Experiences ✅
 
 - GET /experience
 - POST /experience
@@ -40,7 +40,7 @@ Experiences
 
 ---
 
-Education
+Education ✅
 
 - GET /education
 - POST /education
@@ -49,7 +49,7 @@ Education
 
 ---
 
-Projects
+Projects ✅
 
 - GET /projects
 - POST /projects
@@ -58,7 +58,7 @@ Projects
 
 ---
 
-Services
+Services ✅
 
 - GET /services
 - POST /services
@@ -67,10 +67,11 @@ Services
 
 ---
 
-Contact (Not decided!)
+Contact ✅
 
 - POST /contact
 - GET /contact
+- DELETE /contact
 
 ---
 
