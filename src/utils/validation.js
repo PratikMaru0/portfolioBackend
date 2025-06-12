@@ -12,3 +12,23 @@ export const validateSignUpData = (req) => {
     throw new Error(schemaMessages.PASSWORD_INVALID);
   }
 };
+
+export const validateEditProfileData = (req) => {
+  const allowedEditFields = [
+    "firstName",
+    "lastName",
+    "emailId",
+    "phoneNumber",
+    "profilePicUrl",
+    "tagline",
+    "shortIntro",
+    "socialMediaLink",
+    "resumeUrl",
+  ];
+
+  const isEditAllowed = Object.keys(req.body).every((field) =>
+    allowedEditFields.includes(field)
+  );
+
+  return isEditAllowed;
+};

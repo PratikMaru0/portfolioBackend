@@ -1,5 +1,5 @@
 import express from "express";
-import { isAllowed } from "../middlewares.js";
+import { isAdmin, isAllowed } from "../middlewares.js";
 import bcrypt from "bcrypt";
 import Admin from "../models/admin.js";
 import { validateSignUpData } from "../utils/validation.js";
@@ -46,10 +46,11 @@ router.post("/login", isAllowed, async (req, res) => {
 
       if (isPasswordValid) {
         const token = await admin.getJWT();
-        res.cookie("token", token, {
-          expires: new Date(Date.now() + 7 * 24 * 3600000), //& Cookie will expire in 7 days
-        });
-        res.send(messages.LOGIN_SUCCESS);
+        res
+          .cookie("token", token, {
+            expires: new Date(Date.now() + 7 * 24 * 3600000), //& Cookie will expire in 7 days
+          })
+          .send(messages.LOGIN_SUCCESS);
       } else {
         throw new Error(messages.LOGIN_FAILED);
       }
@@ -61,6 +62,13 @@ router.post("/login", isAllowed, async (req, res) => {
       .status(400)
       .send({ message: messages.SOMETHING_WENT_WRONG, error: err.message });
   }
+});
+
+router.post("/logout", (req, res) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+  });
+  res.status(200).send(messages.LOGOUT_SUCCESSFULL);
 });
 
 export default router;

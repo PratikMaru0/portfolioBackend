@@ -1,6 +1,7 @@
 const messages = {
   SIGNUP_SUCCESSFULL: "Sign Up Successful",
   LOGOUT_SUCCESSFULL: "Logout Successful",
+  LOGOUT_FAILED: "Logout Failed",
   LOGIN_FAILED: "Invalid Credentials",
   LOGIN_SUCCESS: "Login Successfull",
   SOMETHING_WENT_WRONG: "Something went wrong.",
@@ -16,6 +17,8 @@ const messages = {
   ADMIN_NOT_FOUND: "Admin with this email Id is not present ",
   INVALID_TOKEN: "Token is not valid.",
   NON_ADMIN: "Please ask admin to give you access.",
+  INVALID_EDIT_REQUEST: "Invalid Edit Requests",
+  INVALID_URL: "Please provide valid URL",
 };
 
 export default messages;
