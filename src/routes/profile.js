@@ -4,6 +4,8 @@ import messages from "../constants/statusMessages.js";
 import { validateEditProfileData } from "../utils/validation.js";
 import validator from "validator";
 import { isAdmin } from "../middlewares.js";
+import schemaMessages from "../constants/schemaMessages.js";
+import bcrypt from "bcrypt";
 
 const router = express.Router();
 
@@ -68,11 +70,52 @@ router.patch("/profile", isAdmin, async (req, res) => {
       runValidators: true,
     });
 
-    res.status(200).send(updatedProfile);
+    res.status(200).send({
+      message: `${updatedProfile.firstName}'s, ${messages.PROFILE_UPDATE_SUCCESS}`,
+      data: updatedProfile,
+    });
   } catch (err) {
     res
       .status(400)
       .send({ message: messages.UPDATE_FAILED, error: err.message });
+  }
+});
+
+// ^ API :- Used to update password of the Admin
+router.patch("/updatePassword", isAdmin, async (req, res) => {
+  try {
+    const { oldPassword, newPassword, confirmNewPassword } = req.body;
+
+    if (!oldPassword || !newPassword || !confirmNewPassword) {
+      throw new Error(messages.ALL_PASSWORD_FIELDS_REQUIRED);
+    }
+
+    if (!validator.isStrongPassword(newPassword)) {
+      throw new Error(schemaMessages.PASSWORD_INVALID);
+    }
+    if (newPassword !== confirmNewPassword) {
+      throw new Error(messages.NEW_PASSWORD_MISMATCH);
+    }
+    const adminDetails = req.admin;
+
+    const isPasswordValid = await bcrypt.compare(
+      oldPassword,
+      adminDetails.password
+    );
+    if (!isPasswordValid) {
+      throw new Error(messages.OLD_PASSWORD_NOT_VALID);
+    }
+    if (oldPassword === newPassword) {
+      throw new Error(messages.OLD_NEW_PASSWORD_MATCH);
+    }
+    adminDetails.password = await bcrypt.hash(newPassword, 10);
+    await adminDetails.save();
+    res.send(messages.PASSWORD_UPDATE_SUCCESS);
+  } catch (err) {
+    res.status(400).send({
+      message: messages.UPDATE_FAILED,
+      error: err.message,
+    });
   }
 });
 

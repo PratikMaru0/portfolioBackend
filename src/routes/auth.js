@@ -64,6 +64,7 @@ router.post("/login", isAllowed, async (req, res) => {
   }
 });
 
+// ^ Admin Log out
 router.post("/logout", (req, res) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),

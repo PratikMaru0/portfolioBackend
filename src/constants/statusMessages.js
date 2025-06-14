@@ -19,6 +19,12 @@ const messages = {
   NON_ADMIN: "Please ask admin to give you access.",
   INVALID_EDIT_REQUEST: "Invalid Edit Requests",
   INVALID_URL: "Please provide valid URL",
+  PROFILE_UPDATE_SUCCESS: "Profile is updated successfully!",
+  NEW_PASSWORD_MISMATCH: "New password and Confirm new password should match",
+  ALL_PASSWORD_FIELDS_REQUIRED: "All password fields are required.",
+  OLD_PASSWORD_NOT_VALID: "Old password is not valid",
+  OLD_NEW_PASSWORD_MATCH: "Old password and new password are same",
+  PASSWORD_UPDATE_SUCCESS: "Password updated successully",
 };
 
 export default messages;
