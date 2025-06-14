@@ -25,6 +25,7 @@ const messages = {
   OLD_PASSWORD_NOT_VALID: "Old password is not valid",
   OLD_NEW_PASSWORD_MATCH: "Old password and new password are same",
   PASSWORD_UPDATE_SUCCESS: "Password updated successully",
+  PASSWORD_REQUIRED: "Password is required",
 };
 
 export default messages;

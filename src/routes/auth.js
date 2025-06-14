@@ -4,9 +4,11 @@ import bcrypt from "bcrypt";
 import Admin from "../models/admin.js";
 import { validateSignUpData } from "../utils/validation.js";
 import messages from "../constants/statusMessages.js";
+import schemaMessages from "../constants/schemaMessages.js";
 import sendEmail from "../config/email.js";
 import jwt from "jsonwebtoken";
 import common from "../constants/common.js";
+import validator from "validator";
 
 const router = express.Router();
 
@@ -80,14 +82,38 @@ router.post("/forgotPassword", async (req, res) => {
   try {
     const { emailId } = req.body;
 
-    const token = await jwt.sign({ _id: emailId }, process.env.JWT_SECRET_KEY);
-    const link = `${common.backendUrl}token=${token}`;
+    const token = await jwt.sign({ _id: emailId }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "15m",
+    });
+    const link = `${common.backendUrl}resetPassword/${token}`;
     const isEmailSent = await sendEmail(emailId, link);
     if (isEmailSent) {
       res.status(200).send("Email sent succssfully");
     }
   } catch (err) {
     res.send({
+      message: messages.SOMETHING_WENT_WRONG,
+      error: err.message,
+    });
+  }
+});
+
+// ^ Admin reset password
+router.post("/resetPassword/:token", async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { _id } = await jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const { password } = req.body;
+    if (!validator.isStrongPassword(password)) {
+      throw new Error(schemaMessages.PASSWORD_INVALID);
+    }
+    const encryptedPassword = await bcrypt.hash(password, 10);
+    const admin = await Admin.findOne({ emailId: _id });
+    admin.password = encryptedPassword;
+    await admin.save();
+    res.send(messages.PASSWORD_UPDATE_SUCCESS);
+  } catch (err) {
+    res.status(400).send({
       message: messages.SOMETHING_WENT_WRONG,
       error: err.message,
     });
