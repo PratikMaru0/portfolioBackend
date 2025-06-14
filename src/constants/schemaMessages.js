@@ -5,6 +5,7 @@ const schemaMessages = {
   URL_INVALID: "Invalid URL",
   PASSWORD_INVALID:
     "Password should be strong and contain uppercase, lowercase, number",
+  INVALID_DATE: "Date is invalid",
 };
 
 export default schemaMessages;
