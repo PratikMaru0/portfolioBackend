@@ -109,6 +109,9 @@ router.post("/resetPassword/:token", async (req, res) => {
     }
     const encryptedPassword = await bcrypt.hash(password, 10);
     const admin = await Admin.findOne({ emailId: _id });
+    if (!admin) {
+      throw new Error("Email is not registered with us");
+    }
     admin.password = encryptedPassword;
     await admin.save();
     res.send(messages.PASSWORD_UPDATE_SUCCESS);
