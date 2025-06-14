@@ -1,9 +1,12 @@
 import express from "express";
-import { isAdmin, isAllowed } from "../middlewares.js";
+import { isAllowed } from "../middlewares.js";
 import bcrypt from "bcrypt";
 import Admin from "../models/admin.js";
 import { validateSignUpData } from "../utils/validation.js";
 import messages from "../constants/statusMessages.js";
+import sendEmail from "../config/email.js";
+import jwt from "jsonwebtoken";
+import common from "../constants/common.js";
 
 const router = express.Router();
 
@@ -70,6 +73,25 @@ router.post("/logout", (req, res) => {
     expires: new Date(Date.now()),
   });
   res.status(200).send(messages.LOGOUT_SUCCESSFULL);
+});
+
+// ^ Admin Forgot password
+router.post("/forgotPassword", async (req, res) => {
+  try {
+    const { emailId } = req.body;
+
+    const token = await jwt.sign({ _id: emailId }, process.env.JWT_SECRET_KEY);
+    const link = `${common.backendUrl}token=${token}`;
+    const isEmailSent = await sendEmail(emailId, link);
+    if (isEmailSent) {
+      res.status(200).send("Email sent succssfully");
+    }
+  } catch (err) {
+    res.send({
+      message: messages.SOMETHING_WENT_WRONG,
+      error: err.message,
+    });
+  }
 });
 
 export default router;
