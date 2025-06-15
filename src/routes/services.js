@@ -21,7 +21,10 @@ router.post("/services", isAdmin, (req, res) => {
   try {
     const services = new Services(req.body);
     services.save();
-    res.send(messages.CREATE_SUCCESS);
+    res.send({
+      message: messages.CREATE_SUCCESS,
+      data: services,
+    });
   } catch (err) {
     res.status(400).send({
       message: messages.CREATE_FAILED,
@@ -33,9 +36,19 @@ router.post("/services", isAdmin, (req, res) => {
 router.patch("/services/:id", isAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const serviceUpdate = await Services.findByIdAndUpdate(id, { ...req.body });
+    const serviceUpdate = await Services.findByIdAndUpdate(
+      id,
+      { ...req.body },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
     await serviceUpdate.save();
-    res.send(messages.UPDATE_SUCCESS);
+    res.send({
+      message: messages.UPDATE_SUCCESS,
+      data: serviceUpdate,
+    });
   } catch (err) {
     res.status(400).send({
       message: messages.UPDATE_FAILED,

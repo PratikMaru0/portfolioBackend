@@ -24,7 +24,10 @@ router.post("/education", isAdmin, async (req, res) => {
     }
     const educationDetails = new Education(req.body);
     await educationDetails.save();
-    res.send(messages.CREATE_SUCCESS);
+    res.send({
+      message: messages.CREATE_SUCCESS,
+      data: educationDetails,
+    });
   } catch (err) {
     res.status(400).send({
       message: messages.CREATE_FAILED,
@@ -39,8 +42,17 @@ router.patch("/education/:id", isAdmin, async (req, res) => {
       throw new Error(messages.INVALID_EDIT_REQUEST);
     }
     const { id } = req.params;
-    await Education.findByIdAndUpdate(id, req.body);
-    res.send(messages.UPDATE_SUCCESS);
+    const educationDetails = await Education.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!educationDetails) {
+      return res.status(404).send({ message: "Education record not found." });
+    }
+    res.send({
+      message: messages.UPDATE_SUCCESS,
+      data: educationDetails,
+    });
   } catch (err) {
     res.status(400).send({
       message: messages.UPDATE_FAILED,

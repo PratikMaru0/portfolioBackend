@@ -23,7 +23,10 @@ router.post("/experience", isAdmin, async (req, res) => {
   try {
     const addExperience = new Experience(req.body);
     await addExperience.save();
-    res.send(messages.EXPERIENCE_ADDED);
+    res.send({
+      message: messages.CREATE_SUCCESS,
+      data: addExperience,
+    });
   } catch (err) {
     res.status(400).send({
       message: messages.CREATE_FAILED,
@@ -39,11 +42,21 @@ router.patch("/experience/:id", isAdmin, async (req, res) => {
     if (!validateExperienceData(req)) {
       throw new Error(messages.INVALID_EDIT_REQUEST);
     }
-    const experienceDetails = await Experience.findByIdAndUpdate(id, {
-      ...req.body,
-    });
+    const experienceDetails = await Experience.findByIdAndUpdate(
+      id,
+      {
+        ...req.body,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
     await experienceDetails.save();
-    res.send(messages.UPDATE_SUCCESS);
+    res.send({
+      message: messages.UPDATE_SUCCESS,
+      data: experienceDetails,
+    });
   } catch (err) {
     res.status(400).send({
       message: messages.UPDATE_FAILED,

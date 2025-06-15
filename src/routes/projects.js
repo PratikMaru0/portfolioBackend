@@ -25,7 +25,10 @@ router.post("/projects", isAdmin, (req, res) => {
     }
     const projectDetails = new Project(req.body);
     projectDetails.save();
-    res.send(messages.CREATE_SUCCESS);
+    res.send({
+      message: messages.CREATE_SUCCESS,
+      data: projectDetails,
+    });
   } catch (err) {
     res.status(400).send({
       message: messages.CREATE_FAILED,
@@ -40,11 +43,21 @@ router.patch("/projects/:id", isAdmin, async (req, res) => {
       throw new Error(messages.INVALID_EDIT_REQUEST);
     }
     const { id } = req.params;
-    const projectDetails = await Project.findByIdAndUpdate(id, {
-      ...req.body,
-    });
+    const projectDetails = await Project.findByIdAndUpdate(
+      id,
+      {
+        ...req.body,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
     await projectDetails.save();
-    res.send(messages.UPDATE_SUCCESS);
+    res.send({
+      message: messages.UPDATE_SUCCESS,
+      data: projectDetails,
+    });
   } catch (err) {
     res.status(400).send({
       message: messages.UPDATE_FAILED,
