@@ -33,28 +33,28 @@ Quotes (Not decided)
 
 Experiences ✅
 
-- GET /experience
-- POST /experience
-- PATCH /experience
-- DELETE /experience
+- GET /experience ✅
+- POST /experience ✅
+- PATCH /experience ✅
+- DELETE /experience ✅
 
 ---
 
 Education ✅
 
-- GET /education
-- POST /education
-- PATCH /education
-- DELETE /education
+- GET /education ✅
+- POST /education ✅
+- PATCH /education ✅
+- DELETE /education ✅
 
 ---
 
 Projects ✅
 
-- GET /projects
-- POST /projects
-- PATCH /projects
-- DELETE /projects
+- GET /projects ✅
+- POST /projects ✅
+- PATCH /projects ✅
+- DELETE /projects ✅
 
 ---
 

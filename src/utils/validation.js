@@ -46,3 +46,36 @@ export const validateExperienceData = (req) => {
   );
   return isEditAllowed;
 };
+
+export const validateProjectData = (req) => {
+  const allowedEditFields = [
+    "imageUrl",
+    "projectName",
+    "description",
+    "problemSolve",
+    "techStack",
+    "gitHubLink",
+    "liveLink",
+  ];
+
+  const isEditAllowed = Object.keys(req.body).every((field) =>
+    allowedEditFields.includes(field)
+  );
+  return isEditAllowed;
+};
+
+export const validateEducationData = (req) => {
+  const allowedEditFields = [
+    "institute",
+    "degree",
+    "startDate",
+    "endDate",
+    "learnings",
+    "activities",
+  ];
+
+  const isEditAllowed = Object.keys(req.body).every((field) =>
+    allowedEditFields.includes(field)
+  );
+  return isEditAllowed;
+};

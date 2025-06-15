@@ -6,6 +6,9 @@ const schemaMessages = {
   PASSWORD_INVALID:
     "Password should be strong and contain uppercase, lowercase, number",
   INVALID_DATE: "Date is invalid",
+  MAX_LEN_50: "Maximum 50 characters allowed",
+  MAX_LEN_500: "Maximum 500 characters allowed",
+  MAX_LEN_250: "Maximum 250 characters allowed",
 };
 
 export default schemaMessages;
