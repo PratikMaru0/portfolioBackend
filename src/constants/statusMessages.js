@@ -26,6 +26,7 @@ const messages = {
   OLD_NEW_PASSWORD_MATCH: "Old password and new password are same",
   PASSWORD_UPDATE_SUCCESS: "Password updated successully",
   PASSWORD_REQUIRED: "Password is required",
+  EXPERIENCE_ADDED: "Experience added successfully",
 };
 
 export default messages;

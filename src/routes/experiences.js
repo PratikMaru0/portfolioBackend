@@ -19,18 +19,30 @@ router.get("/experience", async (req, res) => {
 });
 
 // ^ Admin :- Used to create new experience record
-router.post("/experience", isAdmin, (req, res) => {
-  res.send("Experience");
+router.post("/experience", isAdmin, async (req, res) => {
+  try {
+    const addExperience = new Experience(req.body);
+    await addExperience.save();
+    res.send(messages.EXPERIENCE_ADDED);
+  } catch (err) {
+    res.status(400).send({
+      message: messages.CREATE_FAILED,
+      error: err.message,
+    });
+  }
 });
 
 // ^ Admin :- Used to update new experience record
-router.patch("/experience/:id", isAdmin, (req, res) => {
+router.patch("/experience/:id", isAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     if (!validateExperienceData(req)) {
       throw new Error(messages.INVALID_EDIT_REQUEST);
     }
-
+    const experienceDetails = await Experience.findByIdAndUpdate(id, {
+      ...req.body,
+    });
+    await experienceDetails.save();
     res.send(messages.UPDATE_SUCCESS);
   } catch (err) {
     res.status(400).send({
@@ -41,8 +53,17 @@ router.patch("/experience/:id", isAdmin, (req, res) => {
 });
 
 // ^ Admin :- Used to delete existing experience record
-router.delete("/experience/:id", isAdmin, (req, res) => {
-  res.send("Experience");
+router.delete("/experience/:id", isAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Experience.findByIdAndDelete(id);
+    res.send(messages.DELETE_SUCCESS);
+  } catch (err) {
+    res.status(400).send({
+      message: messages.UPDATE_FAILED,
+      error: err.message,
+    });
+  }
 });
 
 export default router;
