@@ -6,6 +6,7 @@ const servicesSchema = new mongoose.Schema({
     required: true,
     trim: true,
     maxLength: 50,
+    index: true,
   },
   description: {
     type: String,

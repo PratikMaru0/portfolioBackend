@@ -15,6 +15,7 @@ const projectSchema = new mongoose.Schema(
     projectName: {
       type: String,
       required: true,
+      index: true,
       maxLength: 50,
       validate(value) {
         if (value.length > 50) {

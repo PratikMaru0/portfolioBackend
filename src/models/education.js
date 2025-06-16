@@ -8,11 +8,14 @@ const educationSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      index: true,
+      unique: true,
     },
     degree: {
       type: String,
       required: true,
       trim: true,
+      unique: true,
     },
     startDate: {
       type: Date,

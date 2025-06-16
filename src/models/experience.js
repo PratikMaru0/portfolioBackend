@@ -8,6 +8,7 @@ const experienceSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      index: true,
     },
     role: {
       type: String,
