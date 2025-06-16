@@ -60,18 +60,10 @@ Projects ✅
 
 Services ✅
 
-- GET /services
-- POST /services
-- PATCH /services
-- DELETE /services
-
----
-
-Contact ✅
-
-- POST /contact
-- GET /contact
-- DELETE /contact
+- GET /services ✅
+- POST /services ✅
+- PATCH /services ✅
+- DELETE /services ✅
 
 ---
 

@@ -25,12 +25,14 @@ router.post("/signUp", isAllowed, async (req, res) => {
         password: passwordHash,
       });
       await admin.save();
-      res.status(200).send(messages.SIGNUP_SUCCESSFULL);
+      res.status(200).json({
+        message: messages.SIGNUP_SUCCESSFULL,
+      });
     } else {
       throw new Error(messages.NON_ADMIN);
     }
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.CREATE_FAILED,
       error: err.message,
     });
@@ -65,7 +67,7 @@ router.post("/login", isAllowed, async (req, res) => {
   } catch (err) {
     res
       .status(400)
-      .send({ message: messages.SOMETHING_WENT_WRONG, error: err.message });
+      .json({ message: messages.SOMETHING_WENT_WRONG, error: err.message });
   }
 });
 
@@ -74,7 +76,9 @@ router.post("/logout", (req, res) => {
   res.cookie("token", null, {
     expires: new Date(Date.now()),
   });
-  res.status(200).send(messages.LOGOUT_SUCCESSFULL);
+  res.status(200).json({
+    message: messages.LOGOUT_SUCCESS,
+  });
 });
 
 // ^ Admin Forgot password

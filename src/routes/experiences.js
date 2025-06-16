@@ -9,9 +9,12 @@ const router = express.Router();
 router.get("/experience", async (req, res) => {
   try {
     const experiences = await Experience.find({});
-    res.send(experiences);
+    res.json({
+      message: messages.FETCH_SUCCESS,
+      data: experiences,
+    });
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.FETCH_FAILED,
       error: err.message,
     });
@@ -23,12 +26,12 @@ router.post("/experience", isAdmin, async (req, res) => {
   try {
     const addExperience = new Experience(req.body);
     await addExperience.save();
-    res.send({
+    res.json({
       message: messages.CREATE_SUCCESS,
       data: addExperience,
     });
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.CREATE_FAILED,
       error: err.message,
     });
@@ -53,12 +56,12 @@ router.patch("/experience/:id", isAdmin, async (req, res) => {
       }
     );
     await experienceDetails.save();
-    res.send({
+    res.json({
       message: messages.UPDATE_SUCCESS,
       data: experienceDetails,
     });
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.UPDATE_FAILED,
       error: err.message,
     });
@@ -70,9 +73,11 @@ router.delete("/experience/:id", isAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     await Experience.findByIdAndDelete(id);
-    res.send(messages.DELETE_SUCCESS);
+    res.json({
+      message: messages.DELETE_SUCCESS,
+    });
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.UPDATE_FAILED,
       error: err.message,
     });

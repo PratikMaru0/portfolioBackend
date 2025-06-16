@@ -11,7 +11,10 @@ router.post("/addUser", isAdmin, async (req, res) => {
     const { emailId } = req.body;
     const allowedUsers = await new AllowedUsers({ emailId });
     await allowedUsers.save();
-    res.status(200).send(messages.CREATE_SUCCESS);
+    res.status(200).json({
+      message: messages.CREATE_SUCCESS,
+      data: allowedUsers,
+    });
   } catch (err) {
     res.status(400).send({
       message: messages.CREATE_FAILED,
@@ -24,9 +27,12 @@ router.post("/addUser", isAdmin, async (req, res) => {
 router.get("/getAllowedUsers", isAdmin, async (req, res) => {
   try {
     const allowedUsers = await AllowedUsers.find({});
-    res.status(200).send(allowedUsers);
+    res.status(200).json({
+      message: messages.FETCH_SUCCESS,
+      data: allowedUsers,
+    });
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.FETCH_FAILED,
       error: err.message,
     });
@@ -37,9 +43,12 @@ router.get("/getAllowedUsers", isAdmin, async (req, res) => {
 router.get("/adminDetails", isAdmin, async (req, res) => {
   try {
     const { emailId, createdAt, updatedAt } = req.admin;
-    res.status(200).send({ emailId, createdAt, updatedAt });
+    res.status(200).json({
+      message: messages.FETCH_SUCCESS,
+      data: { emailId, createdAt, updatedAt },
+    });
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.FETCH_FAILED,
       error: err.message,
     });
