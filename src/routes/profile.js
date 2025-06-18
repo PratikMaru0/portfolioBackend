@@ -15,13 +15,16 @@ router.post("/profile", isAdmin, async (req, res) => {
   try {
     const count = await UserDetails.countDocuments();
     if (count >= 1) {
-      return res.status(400).send({ message: "Only one profile allowed." });
+      return res.status(400).json({ message: "Only one profile allowed." });
     }
     const userDetails = new UserDetails(req.body);
     await userDetails.save();
-    res.send(messages.CREATE_SUCCESS);
+    res.json({
+      message: messages.CREATE_SUCCESS,
+      data: userDetails,
+    });
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.CREATE_FAILED,
       error: err.message,
     });
@@ -32,9 +35,12 @@ router.post("/profile", isAdmin, async (req, res) => {
 router.get("/profile", async (req, res) => {
   try {
     const details = await UserDetails.findOne();
-    res.send(details);
+    res.json({
+      message: messages.FETCH_SUCCESS,
+      data: details,
+    });
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.FETCH_FAILED,
       error: err.message,
     });
@@ -70,14 +76,14 @@ router.patch("/profile", isAdmin, async (req, res) => {
       runValidators: true,
     });
 
-    res.status(200).send({
+    res.status(200).json({
       message: `${updatedProfile.firstName}'s, ${messages.PROFILE_UPDATE_SUCCESS}`,
       data: updatedProfile,
     });
   } catch (err) {
     res
       .status(400)
-      .send({ message: messages.UPDATE_FAILED, error: err.message });
+      .json({ message: messages.UPDATE_FAILED, error: err.message });
   }
 });
 
@@ -110,9 +116,9 @@ router.patch("/updatePassword", isAdmin, async (req, res) => {
     }
     adminDetails.password = await bcrypt.hash(newPassword, 10);
     await adminDetails.save();
-    res.send(messages.PASSWORD_UPDATE_SUCCESS);
+    res.json(messages.PASSWORD_UPDATE_SUCCESS);
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.UPDATE_FAILED,
       error: err.message,
     });

@@ -27,6 +27,12 @@ const messages = {
   PASSWORD_UPDATE_SUCCESS: "Password updated successully",
   PASSWORD_REQUIRED: "Password is required",
   EXPERIENCE_ADDED: "Experience added successfully",
+  ADMIN_NOT_VERIFIED: "Please verify your admin account first",
+  ADMIN_ALREADY_VERIFIED: "Admin is already verified",
+  ADMIN_VERIFICATION_SUCCESS: "Admin verification successful",
+  ADMIN_VERIFICATION_FAILED: "Admin verification failed",
+  OTP_SENT_SUCCESS: "OTP sent successfully",
+  INVALID_OTP: "OTP is not valid",
 };
 
 export default messages;

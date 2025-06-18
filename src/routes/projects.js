@@ -9,9 +9,12 @@ const router = express.Router();
 router.get("/projects", async (req, res) => {
   try {
     const projectDetails = await Project.find({});
-    res.send(projectDetails);
+    res.json({
+      message: messages.FETCH_SUCCESS,
+      data: projectDetails,
+    });
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.FETCH_FAILED,
       error: err.message,
     });
@@ -25,12 +28,12 @@ router.post("/projects", isAdmin, (req, res) => {
     }
     const projectDetails = new Project(req.body);
     projectDetails.save();
-    res.send({
+    res.json({
       message: messages.CREATE_SUCCESS,
       data: projectDetails,
     });
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.CREATE_FAILED,
       error: err.message,
     });
@@ -54,12 +57,12 @@ router.patch("/projects/:id", isAdmin, async (req, res) => {
       }
     );
     await projectDetails.save();
-    res.send({
+    res.json({
       message: messages.UPDATE_SUCCESS,
       data: projectDetails,
     });
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.UPDATE_FAILED,
       error: err.message,
     });
@@ -70,9 +73,11 @@ router.delete("/projects/:id", isAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     await Project.findByIdAndDelete(id);
-    res.send(messages.DELETE_SUCCESS);
+    res.json({
+      message: messages.DELETE_SUCCESS,
+    });
   } catch (err) {
-    res.status(400).send({
+    res.status(400).json({
       message: messages.DELETE_FAILED,
       error: err.message,
     });
