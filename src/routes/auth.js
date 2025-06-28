@@ -91,7 +91,7 @@ router.post("/logout", (req, res) => {
     expires: new Date(Date.now()),
   });
   res.status(200).json({
-    message: messages.LOGOUT_SUCCESS,
+    message: messages.LOGOUT_SUCCESSFULL,
   });
 });
 
