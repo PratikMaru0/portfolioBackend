@@ -10,11 +10,18 @@ import experienceRouter from "./routes/experiences.js";
 import educationRouter from "./routes/education.js";
 import projectRouter from "./routes/projects.js";
 import serviceRouter from "./routes/services.js";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 
+app.use(
+  cors({
+    origin: process.env.FE_URL,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 

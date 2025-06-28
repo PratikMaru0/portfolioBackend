@@ -23,14 +23,6 @@ Administration ✅
 
 ---
 
-Quotes (Not decided)
-
-- GET /quotes
-- POST /quotes
-- DELETE /quotes
-
----
-
 Experiences ✅
 
 - GET /experience ✅

@@ -63,7 +63,15 @@ router.post("/login", isAllowed, async (req, res) => {
           .cookie("token", token, {
             expires: new Date(Date.now() + 7 * 24 * 3600000), //& Cookie will expire in 7 days
           })
-          .send(messages.LOGIN_SUCCESS);
+          .status(200)
+          .json({
+            message: messages.LOGIN_SUCCESS,
+            admin: {
+              _id: admin._id,
+              emailId: admin.emailId,
+              isVerified: admin.isVerified,
+            },
+          });
       } else {
         throw new Error(messages.LOGIN_FAILED);
       }
