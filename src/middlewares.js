@@ -50,4 +50,22 @@ const isAllowed = async (req, res, next) => {
   }
 };
 
-export { isAdmin, isAllowed };
+const isVerifiedAdmin = async (req, res, next) => {
+  try {
+    const { emailId } = req.body;
+    const admin = await Admin.findOne({ emailId: emailId });
+    if (!admin) {
+      req.allowed = false;
+    } else {
+      req.allowed = true;
+    }
+    next();
+  } catch (err) {
+    res.status(400).send({
+      message: messages.FETCH_FAILED,
+      error: err.message,
+    });
+  }
+};
+
+export { isAdmin, isAllowed, isVerifiedAdmin };

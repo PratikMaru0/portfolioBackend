@@ -33,6 +33,8 @@ const messages = {
   ADMIN_VERIFICATION_FAILED: "Admin verification failed",
   OTP_SENT_SUCCESS: "OTP sent successfully",
   INVALID_OTP: "OTP is not valid",
+  SELF_ADMIN_DELETE: "You can't remove yourself.",
+  INVALID_DELETE_REQUEST: "Invalid Delete Request",
 };
 
 export default messages;

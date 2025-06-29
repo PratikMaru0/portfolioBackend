@@ -1,5 +1,5 @@
 import express from "express";
-import { isAllowed } from "../middlewares.js";
+import { isAllowed, isVerifiedAdmin } from "../middlewares.js";
 import bcrypt from "bcrypt";
 import Admin from "../models/admin.js";
 import { validateSignUpData } from "../utils/validation.js";
@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken";
 import common from "../constants/common.js";
 import validator from "validator";
 import { sendOTPEmail } from "../config/email.js";
+import AllowedUsers from "../models/allowedUsers.js";
 
 const router = express.Router();
 
@@ -26,6 +27,7 @@ router.post("/signUp", isAllowed, async (req, res) => {
         password: passwordHash,
       });
       await admin.save();
+      await AllowedUsers.deleteOne({ emailId });
 
       res.status(200).json({
         message: messages.SIGNUP_SUCCESSFULL,
@@ -42,11 +44,10 @@ router.post("/signUp", isAllowed, async (req, res) => {
 });
 
 // ^ Admin Log in
-router.post("/login", isAllowed, async (req, res) => {
+router.post("/login", isVerifiedAdmin, async (req, res) => {
   try {
     if (req.allowed) {
       const { emailId, password } = req.body;
-
       const admin = await Admin.findOne({ emailId });
 
       if (admin.isVerified === false) {
