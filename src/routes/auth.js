@@ -1,5 +1,5 @@
 import express from "express";
-import { isAllowed, isVerifiedAdmin } from "../middlewares.js";
+import { isAdmin, isAllowed, isVerifiedAdmin } from "../middlewares.js";
 import bcrypt from "bcrypt";
 import Admin from "../models/admin.js";
 import { validateSignUpData } from "../utils/validation.js";
@@ -17,6 +17,10 @@ const router = express.Router();
 // ^ Admin Sign Up
 router.post("/signUp", isAllowed, async (req, res) => {
   try {
+    const admin = await Admin.findOne({ emailId: req.body.emailId });
+    if (admin) {
+      throw new Error(messages.ADMIN_ALREADY_EXISTS);
+    }
     if (req.allowed) {
       validateSignUpData(req);
       const { emailId, password } = req.body;
@@ -46,12 +50,22 @@ router.post("/signUp", isAllowed, async (req, res) => {
 // ^ Admin Log in
 router.post("/login", isVerifiedAdmin, async (req, res) => {
   try {
-    if (req.allowed) {
+    if (!req.allowed) {
+      const { emailId } = req.body;
+      const invitedAdmin = await AllowedUsers.findOne({ emailId });
+      if (!invitedAdmin) {
+        throw new Error(messages.NON_ADMIN);
+      } else {
+        throw new Error(messages.NO_ACCOUNT_FOUND);
+      }
+    } else {
       const { emailId, password } = req.body;
       const admin = await Admin.findOne({ emailId });
 
       if (admin.isVerified === false) {
-        throw new Error(messages.ADMIN_NOT_VERIFIED);
+        const error = new Error(messages.ADMIN_NOT_VERIFIED);
+        error.status = 403;
+        throw error;
       }
       if (!admin) {
         throw new Error(messages.LOGIN_FAILED);
@@ -76,12 +90,10 @@ router.post("/login", isVerifiedAdmin, async (req, res) => {
       } else {
         throw new Error(messages.LOGIN_FAILED);
       }
-    } else {
-      throw new Error(messages.NON_ADMIN);
     }
   } catch (err) {
     res
-      .status(400)
+      .status(err.status || 400)
       .json({ message: messages.SOMETHING_WENT_WRONG, error: err.message });
   }
 });
@@ -209,6 +221,11 @@ router.post("/verifyOTP", async (req, res) => {
       await admin.save();
       res.status(200).json({
         message: messages.ADMIN_VERIFICATION_SUCCESS,
+        admin: {
+          emailId: admin.emailId,
+          createdAt: admin.createdAt,
+          updatedAt: admin.updatedAt,
+        },
       });
     }
   } catch (err) {

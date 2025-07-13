@@ -10,6 +10,10 @@ const router = express.Router();
 router.post("/addUser", isAdmin, async (req, res) => {
   try {
     const { emailId } = req.body;
+    const isAdmin = await Admin.findOne({ emailId });
+    if (isAdmin) {
+      throw new Error(messages.ADMIN_ALREADY_EXISTS);
+    }
     const allowedUsers = await new AllowedUsers({ emailId });
     await allowedUsers.save();
     res.status(200).json({

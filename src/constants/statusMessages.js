@@ -35,6 +35,8 @@ const messages = {
   INVALID_OTP: "OTP is not valid",
   SELF_ADMIN_DELETE: "You can't remove yourself.",
   INVALID_DELETE_REQUEST: "Invalid Delete Request",
+  NO_ACCOUNT_FOUND: "No account found, please sign up.",
+  ADMIN_ALREADY_EXISTS: "You're already an Admin. Please login",
 };
 
 export default messages;
