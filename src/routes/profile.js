@@ -116,7 +116,7 @@ router.patch("/updatePassword", isAdmin, async (req, res) => {
     }
     adminDetails.password = await bcrypt.hash(newPassword, 10);
     await adminDetails.save();
-    res.json(messages.PASSWORD_UPDATE_SUCCESS);
+    res.json({ message: messages.PASSWORD_UPDATE_SUCCESS });
   } catch (err) {
     res.status(400).json({
       message: messages.UPDATE_FAILED,

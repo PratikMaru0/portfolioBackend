@@ -116,13 +116,13 @@ router.post("/forgotPassword", async (req, res) => {
     const token = await jwt.sign({ _id: emailId }, process.env.JWT_SECRET_KEY, {
       expiresIn: "15m",
     });
-    const link = `${common.backendUrl}resetPassword/${token}`;
+    const link = `${process.env.FE_URL}/resetPassword/${token}`;
     const isEmailSent = await sendEmail(emailId, link);
     if (isEmailSent) {
-      res.status(200).send("Email sent succssfully");
+      res.status(200).json({ message: messages.EMAIL_SENT_SUCCESS });
     }
   } catch (err) {
-    res.send({
+    res.status(400).json({
       message: messages.SOMETHING_WENT_WRONG,
       error: err.message,
     });
@@ -145,7 +145,14 @@ router.post("/resetPassword/:token", async (req, res) => {
     }
     admin.password = encryptedPassword;
     await admin.save();
-    res.send(messages.PASSWORD_UPDATE_SUCCESS);
+    res.status(200).json({
+      message: messages.PASSWORD_UPDATE_SUCCESS,
+      admin: {
+        _id: admin._id,
+        emailId: admin.emailId,
+        isVerified: admin.isVerified,
+      },
+    });
   } catch (err) {
     res.status(400).send({
       message: messages.SOMETHING_WENT_WRONG,

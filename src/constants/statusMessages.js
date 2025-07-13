@@ -37,6 +37,7 @@ const messages = {
   INVALID_DELETE_REQUEST: "Invalid Delete Request",
   NO_ACCOUNT_FOUND: "No account found, please sign up.",
   ADMIN_ALREADY_EXISTS: "You're already an Admin. Please login",
+  EMAIL_SENT_SUCCESS: "Email sent successfully",
 };
 
 export default messages;
