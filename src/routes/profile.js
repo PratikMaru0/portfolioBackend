@@ -50,28 +50,7 @@ router.get("/profile", async (req, res) => {
 // ^ API :- Used to update profile details
 router.patch("/profile", isAdmin, async (req, res) => {
   try {
-    // Separate the socialMediaLinks from other fields
-    const { socialMediaLink, ...otherFields } = req.body;
-
-    if (!validator.isURL(socialMediaLink)) {
-      throw new Error(messages.INVALID_URL);
-    }
-
-    // Validate fields (update your validation to allow 'socialMediaLink')
-    if (!validateEditProfileData(req)) {
-      throw new Error(messages.INVALID_EDIT_REQUEST);
-    }
-
-    // Build update object
-    let updateObj = {};
-    if (Object.keys(otherFields).length > 0) {
-      updateObj.$set = otherFields;
-    }
-    if (socialMediaLink) {
-      updateObj.$push = { socialMediaLinks: socialMediaLink };
-    }
-
-    const updatedProfile = await UserDetails.findOneAndUpdate({}, updateObj, {
+    const updatedProfile = await UserDetails.findOneAndUpdate({}, req.body, {
       new: true,
       runValidators: true,
     });
