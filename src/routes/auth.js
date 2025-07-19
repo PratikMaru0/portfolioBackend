@@ -7,10 +7,11 @@ import messages from "../constants/statusMessages.js";
 import schemaMessages from "../constants/schemaMessages.js";
 import sendEmail from "../config/email.js";
 import jwt from "jsonwebtoken";
-import common from "../constants/common.js";
 import validator from "validator";
 import { sendOTPEmail } from "../config/email.js";
 import AllowedUsers from "../models/allowedUsers.js";
+import ImageKit from "imagekit";
+import getImageKitInstance from "../utils/imageKit.js";
 
 const router = express.Router();
 
@@ -242,4 +243,37 @@ router.post("/verifyOTP", async (req, res) => {
     });
   }
 });
+
+router.get("/imageKitAuth", (req, res) => {
+  try {
+    const imagekit = getImageKitInstance();
+    const { token, expire, signature } = imagekit.getAuthenticationParameters();
+    console.log(token, expire, signature);
+
+    res.send({
+      token,
+      expire,
+      signature,
+      publicKey: process.env.IMAGE_KIT_PUBLIC_KEY,
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: messages.IMAGE_KIT_AUTH_FAIL,
+      error: err.message,
+    });
+  }
+});
+
+router.delete("/delete/:fileId", async (req, res) => {
+  const imagekit = getImageKitInstance();
+  try {
+    const result = await imagekit.deleteFile(req.params.fileId);
+    res.status(200).json({ success: true, result });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: messages.IMAGE_KIT_DELETE_FAIL, error: err.message });
+  }
+});
+
 export default router;

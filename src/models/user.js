@@ -44,6 +44,10 @@ const userDetailsSchema = new mongoose.Schema(
         }
       },
     },
+    profilePicFileId: {
+      type: String,
+      required: true,
+    },
     tagline: {
       type: String,
       required: true,
@@ -73,6 +77,10 @@ const userDetailsSchema = new mongoose.Schema(
           throw new Error(messages.URL_INVALID);
         }
       },
+    },
+    resumeFileId: {
+      type: String,
+      required: true,
     },
   },
   {

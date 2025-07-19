@@ -38,6 +38,8 @@ const messages = {
   NO_ACCOUNT_FOUND: "No account found, please sign up.",
   ADMIN_ALREADY_EXISTS: "You're already an Admin. Please login",
   EMAIL_SENT_SUCCESS: "Email sent successfully",
+  IMAGE_KIT_AUTH_FAIL: "Image Kit Authentication Failed",
+  IMAGE_KIT_DELETE_FAIL: "Image Kit Delete Failed",
 };
 
 export default messages;
