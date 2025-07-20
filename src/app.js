@@ -10,6 +10,7 @@ import experienceRouter from "./routes/experiences.js";
 import educationRouter from "./routes/education.js";
 import projectRouter from "./routes/projects.js";
 import serviceRouter from "./routes/services.js";
+import aboutRouter from "./routes/aboutMe.js";
 import cors from "cors";
 
 dotenv.config();
@@ -32,6 +33,7 @@ app.use("/", experienceRouter);
 app.use("/", educationRouter);
 app.use("/", projectRouter);
 app.use("/", serviceRouter);
+app.use("/", aboutRouter);
 
 //! Database connection
 connectDB()

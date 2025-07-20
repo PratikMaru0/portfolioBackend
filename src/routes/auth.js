@@ -10,7 +10,6 @@ import jwt from "jsonwebtoken";
 import validator from "validator";
 import { sendOTPEmail } from "../config/email.js";
 import AllowedUsers from "../models/allowedUsers.js";
-import ImageKit from "imagekit";
 import getImageKitInstance from "../utils/imageKit.js";
 
 const router = express.Router();
