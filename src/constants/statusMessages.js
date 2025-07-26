@@ -17,7 +17,7 @@ const messages = {
   ADMIN_NOT_FOUND: "Admin with this email Id is not present ",
   INVALID_TOKEN: "Token is not valid.",
   NON_ADMIN: "Please ask admin to give you access.",
-  INVALID_EDIT_REQUEST: "Invalid Edit Requests",
+  INVALID_EDIT_REQUEST: "Invalid Edit Requests. Validation failed",
   INVALID_URL: "Please provide valid URL",
   PROFILE_UPDATE_SUCCESS: "Profile is updated successfully!",
   NEW_PASSWORD_MISMATCH: "New password and Confirm new password should match",

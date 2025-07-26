@@ -7,7 +7,7 @@ const projectSchema = new mongoose.Schema(
     imageUrl: {
       type: String,
       validate(value) {
-        if (!validator.isURL(value)) {
+        if (value && !validator.isURL(value)) {
           throw new Error(schemaMessages.URL_INVALID);
         }
       },
@@ -50,7 +50,7 @@ const projectSchema = new mongoose.Schema(
     gitHubLink: {
       type: String,
       validate(value) {
-        if (!validator.isURL(value)) {
+        if (value && !validator.isURL(value)) {
           throw new Error(schemaMessages.URL_INVALID);
         }
       },
@@ -58,10 +58,13 @@ const projectSchema = new mongoose.Schema(
     liveLink: {
       type: String,
       validate(value) {
-        if (!validator.isURL(value)) {
+        if (value && !validator.isURL(value)) {
           throw new Error(schemaMessages.URL_INVALID);
         }
       },
+    },
+    imageFileId: {
+      type: String,
     },
   },
   {

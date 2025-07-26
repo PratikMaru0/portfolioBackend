@@ -21,18 +21,20 @@ router.get("/projects", async (req, res) => {
   }
 });
 
-router.post("/projects", isAdmin, (req, res) => {
+router.post("/projects", isAdmin, async (req, res) => {
   try {
     if (!validateProjectData(req)) {
       throw new Error(messages.INVALID_EDIT_REQUEST);
     }
+
     const projectDetails = new Project(req.body);
-    projectDetails.save();
+    await projectDetails.save();
     res.json({
       message: messages.CREATE_SUCCESS,
       data: projectDetails,
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       message: messages.CREATE_FAILED,
       error: err.message,

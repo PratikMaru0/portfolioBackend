@@ -56,6 +56,7 @@ export const validateProjectData = (req) => {
     "techStack",
     "gitHubLink",
     "liveLink",
+    "imageFileId",
   ];
 
   const isEditAllowed = Object.keys(req.body).every((field) =>
