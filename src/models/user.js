@@ -57,15 +57,30 @@ const userDetailsSchema = new mongoose.Schema(
       required: true,
     },
     socialMediaLinks: {
-      type: Array,
+      type: [
+        {
+          url: {
+            type: String,
+            required: true,
+            validate(value) {
+              if (!validator.isURL(value)) {
+                throw new Error(messages.URL_INVALID);
+              }
+            },
+          },
+          icon: {
+            type: String,
+            required: true,
+            trim: true,
+          },
+          iconFileId: {
+            type: String,
+          },
+        },
+      ],
       validate(links) {
         if (links.length > 10) {
           throw new Error(messages.SOCIAL_MEDIA_LINKS_LIMIT);
-        }
-        for (const link of links) {
-          if (!validator.isURL(link)) {
-            throw new Error(messages.URL_INVALID);
-          }
         }
       },
     },
