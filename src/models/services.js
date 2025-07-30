@@ -5,14 +5,14 @@ const servicesSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    maxLength: 50,
     index: true,
+    maxLength: 100,
   },
   description: {
     type: String,
     required: true,
     trim: true,
-    maxLength: 500,
+    maxLength: 5000,
   },
   icon: {
     type: String,
