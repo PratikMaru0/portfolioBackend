@@ -39,4 +39,5 @@ app.get("/", (req, res) => {
   res.status(200).send("Hello from backend");
 });
 
+// Testing
 export default app;
