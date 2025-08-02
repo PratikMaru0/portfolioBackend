@@ -35,21 +35,8 @@ app.use("/", projectRouter);
 app.use("/", serviceRouter);
 app.use("/", aboutRouter);
 
-
-app.get('/', (req, res) => {
-  res.status(200).send('Hello from backend');
+app.get("/", (req, res) => {
+  res.status(200).send("Hello from backend");
 });
-
-//! Database connection
-// connectDB()
-//   .then(() => {
-//     console.log("Data connection established");
-//     app.listen(process.env.PORT, () => {
-//       console.log("Listening on Port " + process.env.PORT);
-//     });
-//   })
-//   .catch((err) => {
-//     console.log(err.message);
-//   });
 
 export default app;
