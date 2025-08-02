@@ -1,5 +1,4 @@
 import express from "express";
-import "./config/database.js";
 import connectDB from "./config/database.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -35,9 +34,16 @@ app.use("/", projectRouter);
 app.use("/", serviceRouter);
 app.use("/", aboutRouter);
 
-app.get("/", (req, res) => {
-  res.status(200).send("Hello from backend");
-});
+//! Database connection
+connectDB()
+  .then(() => {
+    console.log("Data connection established");
+    app.listen(process.env.PORT, () => {
+      console.log("Listening on Port " + process.env.PORT);
+    });
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
 
-// Testing
 export default app;
