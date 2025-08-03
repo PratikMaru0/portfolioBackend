@@ -34,7 +34,6 @@ app.use("/", projectRouter);
 app.use("/", serviceRouter);
 app.use("/", aboutRouter);
 
-//! Database connection
 connectDB()
   .then(() => {
     console.log("Data connection established");
