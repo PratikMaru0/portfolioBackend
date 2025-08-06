@@ -25,6 +25,17 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+// Middleware to ensure DB connection is established before handling any request
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    console.error("DB connection error:", err);
+    res.status(500).json({ message: "Database connection error", error: err.message });
+  }
+});
+
 app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", administrationRouter);
@@ -34,15 +45,8 @@ app.use("/", projectRouter);
 app.use("/", serviceRouter);
 app.use("/", aboutRouter);
 
-connectDB()
-  .then(() => {
-    console.log("Data connection established");
-    app.listen(process.env.PORT, () => {
-      console.log("Listening on Port " + process.env.PORT);
-    });
-  })
-  .catch((err) => {
-    console.log(err.message);
-  });
+app.listen(process.env.PORT, () => {
+  console.log("Listening on Port " + process.env.PORT);
+});
 
 export default app;
